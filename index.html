@@ -8,15 +8,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh;overflow:hidden;user-select:none;-webkit-user-select:none;}
-
 #app-screen{display:flex;flex-direction:column;height:100vh;width:100vw;background:linear-gradient(155deg,#1A5FA8 0%,#0D3F7A 100%);}
-
 #header{text-align:center;padding:12px 20px 6px;flex-shrink:0;}
 #header h1{color:#fff;font-size:clamp(18px,4vw,26px);font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);}
 #header p{color:rgba(255,255,255,.7);font-size:clamp(11px,2.5vw,14px);margin-top:2px;}
-
 #grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(6px,1.8vw,12px);padding:clamp(6px,1.8vw,12px);padding-bottom:0;align-content:center;}
-
 .app-btn{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.2);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:transform .12s,background .12s;padding:10px 6px;min-height:90px;position:relative;outline:none;-webkit-tap-highlight-color:transparent;}
 .app-btn:active{transform:scale(.93);background:rgba(255,255,255,.22);}
 .app-btn.configured{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.32);}
@@ -26,13 +22,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
 .app-btn .btn-label{color:#fff;font-size:clamp(11px,2.6vw,16px);font-weight:600;text-align:center;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,.4);padding:0 2px;}
 .app-btn.empty .btn-label{color:rgba(255,255,255,.28);font-weight:400;font-size:clamp(10px,2vw,13px);}
 .btn-color-dot{position:absolute;top:7px;right:9px;width:7px;height:7px;border-radius:50%;background:#4ECFA8;box-shadow:0 0 4px rgba(78,207,168,.7);}
-
 #footer{padding:7px 14px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:10px;}
-#btn-passwords{background:rgba(255,200,50,.18);border:2px solid rgba(255,210,80,.4);border-radius:50px;color:#FFE066;font-size:13px;font-weight:700;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;outline:none;transition:background .15s,transform .1s;}
-#btn-passwords:active{transform:scale(.95);background:rgba(255,200,50,.32);}
+#btn-passwords{background:rgba(255,200,50,.18);border:2px solid rgba(255,210,80,.4);border-radius:50px;color:#FFE066;font-size:13px;font-weight:700;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;outline:none;}
+#btn-passwords:active{transform:scale(.95);}
 #btn-passwords i{font-size:17px;}
-#btn-settings{background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.26);border-radius:50px;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;outline:none;transition:background .15s,transform .1s;}
-#btn-settings:active{transform:scale(.95);background:rgba(255,255,255,.24);}
+#btn-settings{background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.26);border-radius:50px;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;outline:none;}
+#btn-settings:active{transform:scale(.95);}
 #btn-settings i{font-size:16px;}
 
 /* MODAL MOTS DE PASSE */
@@ -61,32 +56,37 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
 .pwd-tip i{font-size:20px;color:#F0A020;flex-shrink:0;margin-top:1px;}
 .pwd-tip p{font-size:13px;color:#7A5500;line-height:1.45;}
 
-/* MODAL PARAMÉTRAGE AVEC RÉORDONNANCEMENT */
+/* MODAL PARAMÉTRAGE */
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:flex-end;justify-content:center;}
 #modal-overlay.open{display:flex;}
 #modal{background:#F4F6FA;border-radius:28px 28px 0 0;width:100%;max-height:92vh;display:flex;flex-direction:column;animation:slideUp .28s cubic-bezier(.34,1.56,.64,1);}
 #modal-handle{display:flex;justify-content:center;padding:13px 0 6px;flex-shrink:0;}
 #modal-handle div{width:40px;height:5px;background:#CCC;border-radius:10px;}
-#modal-top{flex-shrink:0;padding:2px 24px 0;}
-#modal-title{font-size:20px;font-weight:700;color:#1A3A5C;text-align:center;padding-bottom:4px;}
-#modal-subtitle{font-size:13px;color:#999;text-align:center;padding-bottom:10px;}
-#modal-scroll{overflow-y:auto;flex:1;padding-bottom:20px;}
+#modal-top{flex-shrink:0;padding:2px 24px 6px;text-align:center;}
+#modal-title{font-size:20px;font-weight:700;color:#1A3A5C;}
+#modal-subtitle{font-size:12px;color:#AAA;margin-top:3px;}
+#modal-scroll{overflow-y:auto;flex:1;padding-bottom:20px;position:relative;}
 
-.config-slot{display:flex;align-items:center;padding:12px 20px;border-bottom:1px solid #E8EAF0;gap:12px;background:#fff;transition:background .1s;}
+/* SLOTS LISTE */
+.config-slot{display:flex;align-items:center;padding:11px 16px;border-bottom:1px solid #E8EAF0;gap:11px;background:#fff;transition:background .1s;position:relative;}
 .config-slot:first-child{border-top:1px solid #E8EAF0;}
-.config-slot.dragging{opacity:.4;background:#E8F0FB;}
-.config-slot.drag-over{background:#D6E8FF;border-top:2.5px solid #1A5FA8;}
+.config-slot.is-dragging{opacity:0;pointer-events:none;}
+.config-slot.drop-above{border-top:3px solid #1A5FA8;}
+.config-slot.drop-below{border-bottom:3px solid #1A5FA8;}
 
-.drag-handle{color:#C8D0E0;font-size:22px;cursor:grab;padding:4px;flex-shrink:0;touch-action:none;}
-.drag-handle:active{cursor:grabbing;color:#1A5FA8;}
+.drag-handle{color:#C8D0E0;font-size:24px;padding:6px 4px;flex-shrink:0;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent;}
 
-.config-slot-num{width:30px;height:30px;border-radius:9px;background:#E8F0FB;color:#1A5FA8;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.config-slot-icon{font-size:22px;width:30px;text-align:center;flex-shrink:0;}
+.config-slot-num{width:28px;height:28px;border-radius:8px;background:#E8F0FB;color:#1A5FA8;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.config-slot-icon{font-size:21px;width:28px;text-align:center;flex-shrink:0;}
 .config-slot-info{flex:1;min-width:0;}
 .config-slot-name{font-size:15px;font-weight:600;color:#1A3A5C;}
 .config-slot-url{font-size:11px;color:#AAA;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.config-slot-edit-btn{background:#E8F0FB;border:none;border-radius:10px;color:#1A5FA8;font-size:13px;font-weight:600;padding:6px 12px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
+.config-slot-edit-btn{background:#E8F0FB;border:none;border-radius:9px;color:#1A5FA8;font-size:13px;font-weight:600;padding:6px 11px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
 .config-slot-edit-btn:active{background:#D0E0F8;}
+
+/* Clone flottant pendant drag */
+#drag-clone{position:fixed;pointer-events:none;z-index:9999;opacity:.95;background:#D6E8FF;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.22);display:none;align-items:center;padding:11px 16px;gap:11px;}
+#drag-clone .drag-handle{color:#1A5FA8;}
 
 /* MODAL ÉDITION */
 #edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center;}
@@ -103,7 +103,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
 .catalog-title{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:1px;padding:12px 24px 7px;}
 .catalog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 24px;}
 .catalog-cat-title{font-size:11px;font-weight:700;color:#1A5FA8;text-transform:uppercase;letter-spacing:.5px;padding:14px 24px 7px;}
-.cat-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:7px 3px;border-radius:13px;border:2px solid transparent;transition:border-color .12s,background .12s;}
+.cat-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:7px 3px;border-radius:13px;border:2px solid transparent;}
 .cat-item:active{background:#EEF2FF;}
 .cat-item.selected{border-color:#1A5FA8;background:#EEF2FF;}
 .cat-item-icon{font-size:28px;line-height:1;}
@@ -125,6 +125,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
 </style>
 </head>
 <body>
+
 <div id="app-screen">
   <div id="header">
     <h1>Pour nous les séniors</h1>
@@ -137,6 +138,16 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
   </div>
 </div>
 
+<!-- Clone flottant drag -->
+<div id="drag-clone">
+  <i class="ti ti-grip-vertical drag-handle"></i>
+  <div class="config-slot-num" id="clone-num"></div>
+  <i id="clone-icon" class="config-slot-icon"></i>
+  <div class="config-slot-info">
+    <div class="config-slot-name" id="clone-name"></div>
+  </div>
+</div>
+
 <!-- Modal mots de passe -->
 <div id="pwd-overlay">
   <div id="pwd-modal">
@@ -146,48 +157,17 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
         <h2>Mes mots de passe</h2>
         <p>Retrouvez tous vos mots de passe enregistrés sur cet iPad</p>
       </div>
-      <button class="pwd-direct-btn" id="pwd-open-btn">
-        <i class="ti ti-key"></i> Ouvrir mes mots de passe
-      </button>
+      <button class="pwd-direct-btn" id="pwd-open-btn"><i class="ti ti-key"></i> Ouvrir mes mots de passe</button>
       <p class="pwd-note">L'iPad vous demandera votre code ou votre empreinte.</p>
       <div class="divider-line"></div>
       <div class="guide-title">Si le bouton ne fonctionne pas</div>
       <div class="guide-steps">
-        <div class="guide-step">
-          <div class="step-num">1</div>
-          <div>
-            <div class="step-title">Ouvrez les Réglages</div>
-            <div class="step-desc">L'icône grise avec des engrenages sur votre écran d'accueil</div>
-            <span class="step-tag"><i class="ti ti-settings" style="font-size:11px;vertical-align:-1px"></i> Réglages</span>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">2</div>
-          <div>
-            <div class="step-title">Appuyez sur "Mots de passe"</div>
-            <div class="step-desc">Dans le menu, faites défiler vers le bas</div>
-            <span class="step-tag"><i class="ti ti-key" style="font-size:11px;vertical-align:-1px"></i> Mots de passe</span>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">3</div>
-          <div>
-            <div class="step-title">Confirmez votre identité</div>
-            <div class="step-desc">Posez votre doigt ou saisissez le code de votre iPad</div>
-          </div>
-        </div>
-        <div class="guide-step">
-          <div class="step-num">4</div>
-          <div>
-            <div class="step-title">Cherchez le site voulu</div>
-            <div class="step-desc">Tapez le nom du site dans la barre de recherche, appuyez dessus pour voir l'identifiant et le mot de passe</div>
-          </div>
-        </div>
+        <div class="guide-step"><div class="step-num">1</div><div><div class="step-title">Ouvrez les Réglages</div><div class="step-desc">L'icône grise avec des engrenages sur votre écran d'accueil</div><span class="step-tag"><i class="ti ti-settings" style="font-size:11px;vertical-align:-1px"></i> Réglages</span></div></div>
+        <div class="guide-step"><div class="step-num">2</div><div><div class="step-title">Appuyez sur "Mots de passe"</div><div class="step-desc">Dans le menu, faites défiler vers le bas</div><span class="step-tag"><i class="ti ti-key" style="font-size:11px;vertical-align:-1px"></i> Mots de passe</span></div></div>
+        <div class="guide-step"><div class="step-num">3</div><div><div class="step-title">Confirmez votre identité</div><div class="step-desc">Posez votre doigt ou saisissez le code de votre iPad</div></div></div>
+        <div class="guide-step"><div class="step-num">4</div><div><div class="step-title">Cherchez le site voulu</div><div class="step-desc">Tapez le nom dans la barre de recherche, appuyez dessus pour voir l'identifiant et le mot de passe</div></div></div>
       </div>
-      <div class="pwd-tip">
-        <i class="ti ti-bulb"></i>
-        <p>Sur les sites web, Safari peut remplir automatiquement vos identifiants — vous n'avez pas besoin de les retaper à chaque fois.</p>
-      </div>
+      <div class="pwd-tip"><i class="ti ti-bulb"></i><p>Sur les sites web, Safari peut remplir automatiquement vos identifiants — vous n'avez pas besoin de les retaper à chaque fois.</p></div>
     </div>
   </div>
 </div>
@@ -198,11 +178,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
     <div id="modal-handle"><div></div></div>
     <div id="modal-top">
       <div id="modal-title">Paramétrage des boutons</div>
-      <div id="modal-subtitle">Appuyez sur Modifier · Maintenez <i class="ti ti-grip-vertical" style="font-size:13px;vertical-align:-1px"></i> pour déplacer</div>
+      <div id="modal-subtitle">Maintenez les 3 barres ≡ et glissez pour changer l'ordre</div>
     </div>
-    <div id="modal-scroll">
-      <div id="config-list"></div>
-    </div>
+    <div id="modal-scroll"><div id="config-list"></div></div>
   </div>
 </div>
 
@@ -218,16 +196,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
       </div>
       <div class="divider"></div>
       <div class="catalog-title">Choisir une application</div>
-      <div class="catalog-cat-title">Communication</div>
-      <div class="catalog-grid" id="cat-communication"></div>
-      <div class="catalog-cat-title">Réseaux sociaux &amp; Web</div>
-      <div class="catalog-grid" id="cat-social"></div>
-      <div class="catalog-cat-title">Divertissement</div>
-      <div class="catalog-grid" id="cat-divertissement"></div>
-      <div class="catalog-cat-title">Infos &amp; Pratique</div>
-      <div class="catalog-grid" id="cat-infos"></div>
-      <div class="catalog-cat-title">Apple (natif iPad)</div>
-      <div class="catalog-grid" id="cat-apple"></div>
+      <div class="catalog-cat-title">Communication</div><div class="catalog-grid" id="cat-communication"></div>
+      <div class="catalog-cat-title">Réseaux sociaux &amp; Web</div><div class="catalog-grid" id="cat-social"></div>
+      <div class="catalog-cat-title">Divertissement</div><div class="catalog-grid" id="cat-divertissement"></div>
+      <div class="catalog-cat-title">Infos &amp; Pratique</div><div class="catalog-grid" id="cat-infos"></div>
+      <div class="catalog-cat-title">Apple (natif iPad)</div><div class="catalog-grid" id="cat-apple"></div>
       <div class="divider" style="margin-top:14px;"></div>
       <div class="custom-section" style="margin-top:10px;">
         <label>Ou saisir une adresse personnalisée</label>
@@ -296,6 +269,7 @@ const CATALOG={
   ],
 };
 
+const EMPTY=()=>({name:'',url:'',icon:'',iconColor:''});
 const DEFAULT_SLOTS=[
   {name:'WhatsApp',   url:'https://wa.me',               icon:'ti-brand-whatsapp', iconColor:'#25D366'},
   {name:'Gmail',      url:'https://mail.google.com',     icon:'ti-mail',           iconColor:'#EA4335'},
@@ -303,159 +277,158 @@ const DEFAULT_SLOTS=[
   {name:'YouTube',    url:'https://www.youtube.com',     icon:'ti-brand-youtube',  iconColor:'#FF0000'},
   {name:'Facebook',   url:'https://m.facebook.com',      icon:'ti-brand-facebook', iconColor:'#1877F2'},
   {name:'Google Maps',url:'https://maps.google.fr',      icon:'ti-map-pin',        iconColor:'#34A853'},
-  {name:'',url:'',icon:'',iconColor:''},
-  {name:'',url:'',icon:'',iconColor:''},
-  {name:'',url:'',icon:'',iconColor:''},
-  {name:'',url:'',icon:'',iconColor:''},
-  {name:'',url:'',icon:'',iconColor:''},
-  {name:'',url:'',icon:'',iconColor:''},
+  EMPTY(),EMPTY(),EMPTY(),EMPTY(),EMPTY(),EMPTY(),
 ];
 
-let slots=JSON.parse(localStorage.getItem('seniors_slots_v4')||'null')||DEFAULT_SLOTS.map(s=>({...s}));
-while(slots.length<12)slots.push({name:'',url:'',icon:'',iconColor:''});
+let slots=JSON.parse(localStorage.getItem('seniors_slots_v4')||'null')||DEFAULT_SLOTS;
+while(slots.length<12)slots.push(EMPTY());
 slots=slots.slice(0,12);
 
-let editingIndex=-1;
-let selectedApp=null;
-
-// Drag & drop state
-let dragSrcIndex=-1;
-let dragOverIndex=-1;
+let editingIndex=-1, selectedApp=null;
+let dragSrcIdx=-1, dragTargetIdx=-1;
 
 function save(){try{localStorage.setItem('seniors_slots_v4',JSON.stringify(slots));}catch(e){}}
 
 function renderGrid(){
-  const grid=document.getElementById('grid');grid.innerHTML='';
-  slots.forEach((slot,i)=>{
-    const btn=document.createElement('button');
-    btn.className='app-btn'+(slot.name?' configured':' empty');
-    btn.setAttribute('aria-label',slot.name||'Bouton vide');
-    if(slot.name){
-      const dot=document.createElement('div');dot.className='btn-color-dot';btn.appendChild(dot);
-      const ic=document.createElement('i');ic.className='ti '+(slot.icon||'ti-apps')+' btn-icon';
-      if(slot.iconColor)ic.style.color=slot.iconColor;
-      ic.setAttribute('aria-hidden','true');btn.appendChild(ic);
-      const lbl=document.createElement('span');lbl.className='btn-label';lbl.textContent=slot.name;btn.appendChild(lbl);
+  const g=document.getElementById('grid');g.innerHTML='';
+  slots.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='app-btn'+(s.name?' configured':' empty');
+    if(s.name){
+      const d=document.createElement('div');d.className='btn-color-dot';b.appendChild(d);
+      const ic=document.createElement('i');ic.className='ti '+(s.icon||'ti-apps')+' btn-icon';
+      if(s.iconColor)ic.style.color=s.iconColor;b.appendChild(ic);
+      const lb=document.createElement('span');lb.className='btn-label';lb.textContent=s.name;b.appendChild(lb);
     } else {
-      const ic=document.createElement('i');ic.className='ti ti-plus btn-icon';ic.setAttribute('aria-hidden','true');btn.appendChild(ic);
-      const lbl=document.createElement('span');lbl.className='btn-label';lbl.textContent='Ajouter';btn.appendChild(lbl);
+      const ic=document.createElement('i');ic.className='ti ti-plus btn-icon';b.appendChild(ic);
+      const lb=document.createElement('span');lb.className='btn-label';lb.textContent='Ajouter';b.appendChild(lb);
     }
-    btn.addEventListener('click',()=>{
-      if(slot.name&&slot.url)window.open(slot.url,'_blank');
-      else openEditModal(i);
-    });
-    grid.appendChild(btn);
+    b.onclick=()=>{ if(s.name&&s.url)window.open(s.url,'_blank'); else openEditModal(i); };
+    g.appendChild(b);
   });
+}
+
+/* ===== DRAG & DROP TACTILE ===== */
+const clone=document.getElementById('drag-clone');
+let cloneW=0, cloneH=0, offsetY=0;
+
+function getRowEls(){return Array.from(document.querySelectorAll('#config-list .config-slot'));}
+
+function clearDropMarkers(){getRowEls().forEach(r=>{r.classList.remove('drop-above','drop-below');});}
+
+function findDropTarget(clientY){
+  // Retourne l'index où insérer (0..11)
+  const rows=getRowEls();
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i].getBoundingClientRect();
+    if(clientY<r.top+r.height/2) return i;
+  }
+  return rows.length-1;
+}
+
+function initDrag(handle, rowIndex){
+  handle.addEventListener('touchstart',e=>{
+    e.stopPropagation();
+    e.preventDefault();
+    dragSrcIdx=rowIndex;
+    const touch=e.touches[0];
+    const row=getRowEls()[rowIndex];
+    const rb=row.getBoundingClientRect();
+    cloneW=rb.width; cloneH=rb.height;
+    offsetY=touch.clientY-rb.top;
+
+    // Populate clone
+    const s=slots[rowIndex];
+    document.getElementById('clone-num').textContent=rowIndex+1;
+    const ci=document.getElementById('clone-icon');
+    ci.className='ti '+(s.icon||'ti-apps')+' config-slot-icon';
+    if(s.iconColor)ci.style.color=s.iconColor;
+    document.getElementById('clone-name').textContent=s.name||'Bouton vide';
+
+    clone.style.width=cloneW+'px';
+    clone.style.height=cloneH+'px';
+    clone.style.left=rb.left+'px';
+    clone.style.top=(touch.clientY-offsetY)+'px';
+    clone.style.display='flex';
+
+    row.classList.add('is-dragging');
+  },{passive:false});
+
+  handle.addEventListener('touchmove',e=>{
+    if(dragSrcIdx<0)return;
+    e.preventDefault();
+    const touch=e.touches[0];
+    clone.style.top=(touch.clientY-offsetY)+'px';
+
+    dragTargetIdx=findDropTarget(touch.clientY);
+    clearDropMarkers();
+    const rows=getRowEls();
+    if(dragTargetIdx!==dragSrcIdx){
+      if(dragTargetIdx<dragSrcIdx){
+        rows[dragTargetIdx].classList.add('drop-above');
+      } else {
+        rows[dragTargetIdx].classList.add('drop-below');
+      }
+    }
+  },{passive:false});
+
+  handle.addEventListener('touchend',e=>{
+    if(dragSrcIdx<0)return;
+    clone.style.display='none';
+    clearDropMarkers();
+    getRowEls().forEach(r=>r.classList.remove('is-dragging'));
+
+    if(dragTargetIdx>=0 && dragTargetIdx!==dragSrcIdx){
+      const moved=slots.splice(dragSrcIdx,1)[0];
+      const insertAt=dragTargetIdx>dragSrcIdx ? dragTargetIdx : dragTargetIdx;
+      slots.splice(insertAt,0,moved);
+      save(); renderGrid(); renderConfigList();
+    }
+    dragSrcIdx=-1; dragTargetIdx=-1;
+  },{passive:false});
 }
 
 function renderConfigList(){
   const list=document.getElementById('config-list');list.innerHTML='';
-  slots.forEach((slot,i)=>{
-    const div=document.createElement('div');
-    div.className='config-slot';
-    div.setAttribute('data-index',i);
-    div.draggable=false; // handled via touch/pointer on handle
+  slots.forEach((s,i)=>{
+    const row=document.createElement('div');row.className='config-slot';
 
-    // Drag handle
     const handle=document.createElement('i');
     handle.className='ti ti-grip-vertical drag-handle';
     handle.setAttribute('aria-label','Déplacer');
-    handle.setAttribute('title','Maintenir pour déplacer');
-    div.appendChild(handle);
+    row.appendChild(handle);
 
-    // Num
-    const num=document.createElement('div');num.className='config-slot-num';num.textContent=i+1;div.appendChild(num);
+    const num=document.createElement('div');num.className='config-slot-num';num.textContent=i+1;row.appendChild(num);
 
-    // Icon
     const ic=document.createElement('i');
-    ic.className='ti '+(slot.icon||'ti-plus')+' config-slot-icon';
-    if(slot.iconColor)ic.style.color=slot.iconColor;
-    ic.setAttribute('aria-hidden','true');div.appendChild(ic);
+    ic.className='ti '+(s.icon||'ti-plus')+' config-slot-icon';
+    if(s.iconColor)ic.style.color=s.iconColor;
+    row.appendChild(ic);
 
-    // Info
     const info=document.createElement('div');info.className='config-slot-info';
-    const nm=document.createElement('div');nm.className='config-slot-name';nm.textContent=slot.name||'Bouton vide';info.appendChild(nm);
-    const ur=document.createElement('div');ur.className='config-slot-url';ur.textContent=slot.url||'Appuyez sur Modifier pour configurer';info.appendChild(ur);
-    div.appendChild(info);
+    const nm=document.createElement('div');nm.className='config-slot-name';nm.textContent=s.name||'Bouton vide';info.appendChild(nm);
+    const ur=document.createElement('div');ur.className='config-slot-url';ur.textContent=s.url||'Appuyez sur Modifier';info.appendChild(ur);
+    row.appendChild(info);
 
-    // Edit button
-    const editBtn=document.createElement('button');
-    editBtn.className='config-slot-edit-btn';
-    editBtn.textContent='Modifier';
-    editBtn.addEventListener('click',()=>openEditModal(i));
-    div.appendChild(editBtn);
+    const eb=document.createElement('button');eb.className='config-slot-edit-btn';eb.textContent='Modifier';
+    eb.addEventListener('click',()=>openEditModal(i));
+    row.appendChild(eb);
 
-    // Touch drag on handle
-    setupDrag(handle, div, i);
-
-    list.appendChild(div);
-  });
-}
-
-function setupDrag(handle, row, index){
-  let startY=0, startScrollTop=0, clone=null, rowH=0;
-  const scroll=document.getElementById('modal-scroll');
-
-  handle.addEventListener('touchstart',(e)=>{
-    e.stopPropagation();
-    dragSrcIndex=index;
-    startY=e.touches[0].clientY;
-    startScrollTop=scroll.scrollTop;
-    rowH=row.offsetHeight;
-
-    clone=row.cloneNode(true);
-    clone.style.cssText=`position:fixed;left:${row.getBoundingClientRect().left}px;top:${row.getBoundingClientRect().top}px;width:${row.offsetWidth}px;z-index:999;opacity:.92;background:#D6E8FF;border-radius:12px;pointer-events:none;box-shadow:0 6px 24px rgba(0,0,0,.18);`;
-    document.body.appendChild(clone);
-    row.style.opacity='0.3';
-  },{passive:true});
-
-  handle.addEventListener('touchmove',(e)=>{
-    if(dragSrcIndex<0||!clone)return;
-    e.preventDefault();
-    const dy=e.touches[0].clientY-startY;
-    clone.style.top=(row.getBoundingClientRect().top+dy)+'px';
-
-    // find target
-    const items=document.querySelectorAll('.config-slot');
-    let target=-1;
-    items.forEach((item,idx)=>{
-      const r=item.getBoundingClientRect();
-      const midY=r.top+r.height/2;
-      if(e.touches[0].clientY>midY-rowH/2&&e.touches[0].clientY<midY+rowH/2)target=idx;
-    });
-    dragOverIndex=target>=0?target:dragSrcIndex;
-    items.forEach((item,idx)=>{
-      item.classList.toggle('drag-over',idx===dragOverIndex&&idx!==dragSrcIndex);
-    });
-  },{passive:false});
-
-  handle.addEventListener('touchend',()=>{
-    if(clone){clone.remove();clone=null;}
-    row.style.opacity='';
-    document.querySelectorAll('.config-slot').forEach(el=>el.classList.remove('drag-over','dragging'));
-    if(dragSrcIndex>=0&&dragOverIndex>=0&&dragSrcIndex!==dragOverIndex){
-      const moved=slots.splice(dragSrcIndex,1)[0];
-      slots.splice(dragOverIndex,0,moved);
-      save();renderGrid();renderConfigList();
-    }
-    dragSrcIndex=-1;dragOverIndex=-1;
+    initDrag(handle, i);
+    list.appendChild(row);
   });
 }
 
 function buildCatalog(){
   Object.entries(CATALOG).forEach(([cat,apps])=>{
-    const container=document.getElementById('cat-'+cat);if(!container)return;
+    const c=document.getElementById('cat-'+cat);if(!c)return;
     apps.forEach(app=>{
       const el=document.createElement('div');el.className='cat-item';
-      const ic=document.createElement('i');ic.className='ti '+app.icon+' cat-item-icon';
-      ic.style.color=app.color||'#1A5FA8';ic.setAttribute('aria-hidden','true');el.appendChild(ic);
+      const ic=document.createElement('i');ic.className='ti '+app.icon+' cat-item-icon';ic.style.color=app.color;el.appendChild(ic);
       const nm=document.createElement('div');nm.className='cat-item-name';nm.textContent=app.name;el.appendChild(nm);
-      const badge=document.createElement('span');
-      badge.className=app.type==='web'?'badge-web':'badge-app';
-      badge.textContent=app.type==='web'?'WEB':'APP';
-      el.appendChild(badge);
+      const bg=document.createElement('span');bg.className=app.type==='web'?'badge-web':'badge-app';bg.textContent=app.type==='web'?'WEB':'APP';el.appendChild(bg);
       el.addEventListener('click',()=>selectApp(app,el));
-      container.appendChild(el);
+      c.appendChild(el);
     });
   });
 }
@@ -468,50 +441,48 @@ function selectApp(app,el){
   document.getElementById('edit-url').value=app.url;
 }
 
-function openEditModal(index){
-  editingIndex=index;
-  const slot=slots[index];
-  document.getElementById('edit-title').textContent='Bouton '+(index+1);
-  document.getElementById('edit-name').value=slot.name||'';
-  document.getElementById('edit-url').value=slot.url||'';
+function openEditModal(i){
+  editingIndex=i;
+  const s=slots[i];
+  document.getElementById('edit-title').textContent='Bouton '+(i+1);
+  document.getElementById('edit-name').value=s.name||'';
+  document.getElementById('edit-url').value=s.url||'';
   selectedApp=null;
   document.querySelectorAll('.cat-item').forEach(el=>{
     const nm=el.querySelector('.cat-item-name');
-    el.classList.toggle('selected',!!(nm&&nm.textContent===slot.name&&slot.name));
+    el.classList.toggle('selected',!!(nm&&nm.textContent===s.name&&s.name));
   });
   document.getElementById('edit-overlay').classList.add('open');
   document.getElementById('edit-scroll').scrollTop=0;
 }
 
-function closeEditModal(){document.getElementById('edit-overlay').classList.remove('open');}
+function closeEdit(){document.getElementById('edit-overlay').classList.remove('open');}
 
-document.getElementById('btn-passwords').addEventListener('click',()=>document.getElementById('pwd-overlay').classList.add('open'));
-document.getElementById('pwd-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('pwd-overlay'))document.getElementById('pwd-overlay').classList.remove('open');});
-document.getElementById('pwd-open-btn').addEventListener('click',()=>{
+// Events
+document.getElementById('btn-passwords').onclick=()=>document.getElementById('pwd-overlay').classList.add('open');
+document.getElementById('pwd-overlay').addEventListener('click',e=>{if(e.target.id==='pwd-overlay')document.getElementById('pwd-overlay').classList.remove('open');});
+document.getElementById('pwd-open-btn').onclick=()=>{
   window.location.href='App-Prefs://passwords';
   setTimeout(()=>{window.location.href='prefs:root=PASSWORDS';},400);
-});
-
-document.getElementById('btn-settings').addEventListener('click',()=>{renderConfigList();document.getElementById('modal-overlay').classList.add('open');});
-document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');});
-
-document.getElementById('edit-cancel').addEventListener('click',closeEditModal);
-document.getElementById('edit-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('edit-overlay'))closeEditModal();});
-
-document.getElementById('edit-clear').addEventListener('click',()=>{
-  slots[editingIndex]={name:'',url:'',icon:'',iconColor:''};
-  save();renderGrid();renderConfigList();closeEditModal();
-});
-
-document.getElementById('edit-save').addEventListener('click',()=>{
+};
+document.getElementById('btn-settings').onclick=()=>{renderConfigList();document.getElementById('modal-overlay').classList.add('open');};
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target.id==='modal-overlay')document.getElementById('modal-overlay').classList.remove('open');});
+document.getElementById('edit-cancel').onclick=closeEdit;
+document.getElementById('edit-overlay').addEventListener('click',e=>{if(e.target.id==='edit-overlay')closeEdit();});
+document.getElementById('edit-clear').onclick=()=>{
+  slots[editingIndex]=EMPTY();save();renderGrid();renderConfigList();closeEdit();
+};
+document.getElementById('edit-save').onclick=()=>{
   const name=document.getElementById('edit-name').value.trim();
   const url=document.getElementById('edit-url').value.trim();
   if(!name){document.getElementById('edit-name').focus();return;}
-  const icon=selectedApp?selectedApp.icon:(slots[editingIndex].icon||'ti-apps');
-  const iconColor=selectedApp?selectedApp.color:(slots[editingIndex].iconColor||'#1A5FA8');
-  slots[editingIndex]={name,url:url||'#',icon,iconColor};
-  save();renderGrid();renderConfigList();closeEditModal();
-});
+  slots[editingIndex]={
+    name, url:url||'#',
+    icon:selectedApp?selectedApp.icon:(slots[editingIndex].icon||'ti-apps'),
+    iconColor:selectedApp?selectedApp.color:(slots[editingIndex].iconColor||'#1A5FA8'),
+  };
+  save();renderGrid();renderConfigList();closeEdit();
+};
 
 buildCatalog();
 renderGrid();
