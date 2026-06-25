@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Pour nous les séniors</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh;overflow:hidden;user-select:none;-webkit-user-select:none;}
+
+#app-screen{display:flex;flex-direction:column;height:100vh;width:100vw;background:linear-gradient(155deg,#1A5FA8 0%,#0D3F7A 100%);}
+
+#header{text-align:center;padding:16px 20px 8px;flex-shrink:0;}
+#header h1{color:#fff;font-size:clamp(20px,4.5vw,30px);font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);}
+#header p{color:rgba(255,255,255,.7);font-size:clamp(12px,2.8vw,16px);margin-top:3px;}
+
+#grid{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,2vw,16px);padding:clamp(8px,2vw,16px);padding-bottom:0;align-content:center;}
+
+.app-btn{background:rgba(255,255,255,.12);border:2.5px solid rgba(255,255,255,.2);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:transform .12s,background .12s;padding:12px 8px;min-height:105px;position:relative;outline:none;-webkit-tap-highlight-color:transparent;}
+.app-btn:active{transform:scale(.93);background:rgba(255,255,255,.22);}
+.app-btn.configured{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.32);}
+.app-btn.empty{background:rgba(255,255,255,.05);border:2.5px dashed rgba(255,255,255,.2);}
+.app-btn .btn-icon{font-size:clamp(30px,6.5vw,48px);color:#fff;line-height:1;}
+.app-btn.empty .btn-icon{color:rgba(255,255,255,.3);font-size:clamp(22px,5vw,34px);}
+.app-btn .btn-label{color:#fff;font-size:clamp(13px,3vw,19px);font-weight:600;text-align:center;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,.4);padding:0 4px;}
+.app-btn.empty .btn-label{color:rgba(255,255,255,.3);font-weight:400;font-size:clamp(11px,2.4vw,15px);}
+.btn-color-dot{position:absolute;top:9px;right:11px;width:9px;height:9px;border-radius:50%;background:#4ECFA8;box-shadow:0 0 5px rgba(78,207,168,.7);}
+
+#footer{padding:8px 16px 14px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:10px;}
+
+#btn-passwords{background:rgba(255,200,50,.18);border:2px solid rgba(255,210,80,.4);border-radius:50px;color:#FFE066;font-size:14px;font-weight:700;padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:7px;-webkit-tap-highlight-color:transparent;outline:none;transition:background .15s,transform .1s;}
+#btn-passwords:active{transform:scale(.95);background:rgba(255,200,50,.32);}
+#btn-passwords i{font-size:18px;}
+
+#btn-settings{background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.26);border-radius:50px;color:#fff;font-size:14px;font-weight:600;padding:9px 16px;cursor:pointer;display:flex;align-items:center;gap:7px;-webkit-tap-highlight-color:transparent;outline:none;transition:background .15s,transform .1s;}
+#btn-settings:active{transform:scale(.95);background:rgba(255,255,255,.24);}
+#btn-settings i{font-size:17px;}
+
+/* MODAL MOTS DE PASSE */
+#pwd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;align-items:flex-end;justify-content:center;}
+#pwd-overlay.open{display:flex;}
+#pwd-modal{background:#F4F6FA;border-radius:28px 28px 0 0;width:100%;max-height:90vh;display:flex;flex-direction:column;animation:slideUp .28s cubic-bezier(.34,1.56,.64,1);}
+#pwd-handle{display:flex;justify-content:center;padding:13px 0 6px;flex-shrink:0;}
+#pwd-handle div{width:40px;height:5px;background:#CCC;border-radius:10px;}
+#pwd-scroll{overflow-y:auto;flex:1;padding:0 0 30px;}
+
+.pwd-header{text-align:center;padding:8px 24px 20px;}
+.pwd-header h2{font-size:22px;font-weight:700;color:#1A3A5C;margin-bottom:6px;}
+.pwd-header p{font-size:15px;color:#666;line-height:1.5;}
+
+.pwd-direct-btn{display:flex;align-items:center;justify-content:center;gap:12px;background:#1A5FA8;color:#fff;border:none;border-radius:18px;padding:18px 24px;font-size:18px;font-weight:700;cursor:pointer;width:calc(100% - 48px);margin:0 24px 10px;-webkit-tap-highlight-color:transparent;transition:background .12s,transform .1s;}
+.pwd-direct-btn:active{transform:scale(.97);background:#0D3F7A;}
+.pwd-direct-btn i{font-size:26px;}
+
+.pwd-note{text-align:center;font-size:13px;color:#AAA;padding:0 24px 20px;line-height:1.5;}
+
+.divider-line{height:1px;background:#E0E4EE;margin:4px 24px 20px;}
+
+.guide-title{font-size:14px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.8px;padding:0 24px 14px;text-align:center;}
+
+.guide-steps{padding:0 24px;}
+.guide-step{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:#fff;border-radius:16px;margin-bottom:10px;border:1.5px solid #E8EAF4;}
+.step-num{width:36px;height:36px;border-radius:50%;background:#1A5FA8;color:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-content{}
+.step-title{font-size:16px;font-weight:700;color:#1A3A5C;margin-bottom:3px;}
+.step-desc{font-size:14px;color:#666;line-height:1.4;}
+.step-tag{display:inline-block;background:#E8F0FB;color:#1A5FA8;font-size:13px;font-weight:700;padding:3px 10px;border-radius:8px;margin-top:4px;}
+
+.pwd-tip{background:#FFF8E6;border:1.5px solid #FFE080;border-radius:16px;padding:14px 16px;margin:14px 24px 0;display:flex;gap:12px;align-items:flex-start;}
+.pwd-tip i{font-size:22px;color:#F0A020;flex-shrink:0;margin-top:1px;}
+.pwd-tip p{font-size:14px;color:#7A5500;line-height:1.45;}
+
+/* MODAL PARAMÉTRAGE */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:flex-end;justify-content:center;}
+#modal-overlay.open{display:flex;}
+#modal{background:#F4F6FA;border-radius:28px 28px 0 0;width:100%;max-height:90vh;display:flex;flex-direction:column;animation:slideUp .28s cubic-bezier(.34,1.56,.64,1);}
+#modal-handle{display:flex;justify-content:center;padding:13px 0 6px;flex-shrink:0;}
+#modal-handle div{width:40px;height:5px;background:#CCC;border-radius:10px;}
+#modal-top{flex-shrink:0;padding:4px 24px 0;}
+#modal-title{font-size:21px;font-weight:700;color:#1A3A5C;text-align:center;padding-bottom:10px;}
+#modal-scroll{overflow-y:auto;flex:1;padding-bottom:20px;}
+.modal-section-title{font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:1px;padding:12px 24px 6px;}
+.config-slot{display:flex;align-items:center;padding:13px 24px;border-bottom:1px solid #E8EAF0;gap:13px;cursor:pointer;background:#fff;-webkit-tap-highlight-color:transparent;}
+.config-slot:first-child{border-top:1px solid #E8EAF0;}
+.config-slot:active{background:#EEF2FF;}
+.config-slot-num{width:34px;height:34px;border-radius:10px;background:#E8F0FB;color:#1A5FA8;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.config-slot-icon{font-size:24px;color:#1A5FA8;width:34px;text-align:center;flex-shrink:0;}
+.config-slot-info{flex:1;min-width:0;}
+.config-slot-name{font-size:16px;font-weight:600;color:#1A3A5C;}
+.config-slot-url{font-size:12px;color:#AAA;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.config-slot-edit{color:#C0C8D8;font-size:19px;flex-shrink:0;}
+
+/* MODAL ÉDITION */
+#edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center;}
+#edit-overlay.open{display:flex;}
+#edit-modal{background:#F4F6FA;border-radius:28px 28px 0 0;width:100%;max-height:94vh;display:flex;flex-direction:column;animation:slideUp .25s cubic-bezier(.34,1.56,.64,1);}
+#edit-handle{display:flex;justify-content:center;padding:13px 0 4px;flex-shrink:0;}
+#edit-handle div{width:40px;height:5px;background:#CCC;border-radius:10px;}
+#edit-scroll{overflow-y:auto;flex:1;padding:0 0 24px;}
+#edit-modal h3{font-size:20px;font-weight:700;color:#1A3A5C;text-align:center;padding:6px 24px 14px;flex-shrink:0;}
+.field-group{padding:0 24px 14px;}
+.field-group label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.field-group input{width:100%;padding:13px 14px;border:2px solid #DDE2F0;border-radius:14px;font-size:17px;color:#1A3A5C;outline:none;background:#fff;}
+.field-group input:focus{border-color:#1A5FA8;}
+.catalog-title{font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:1px;padding:14px 24px 8px;}
+.catalog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 24px;}
+.catalog-cat-title{font-size:12px;font-weight:700;color:#1A5FA8;text-transform:uppercase;letter-spacing:.5px;padding:16px 24px 8px;}
+.cat-item{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:8px 4px;border-radius:14px;border:2px solid transparent;transition:border-color .12s,background .12s;}
+.cat-item:active{background:#EEF2FF;}
+.cat-item.selected{border-color:#1A5FA8;background:#EEF2FF;}
+.cat-item-icon{font-size:30px;line-height:1;}
+.cat-item-name{font-size:11px;font-weight:600;color:#444;text-align:center;line-height:1.2;}
+.divider{height:1px;background:#E8EAF0;margin:6px 24px;}
+.edit-btns{display:flex;gap:10px;padding:14px 24px 0;flex-shrink:0;}
+.btn-cancel{flex:1;padding:14px;border:2px solid #E0E0E0;border-radius:14px;background:#fff;font-size:16px;font-weight:600;color:#888;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.btn-save{flex:2;padding:14px;border:none;border-radius:14px;background:#1A5FA8;font-size:16px;font-weight:700;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.btn-save:active{background:#0D3F7A;}
+.btn-clear{padding:14px;border:2px solid #FFD0C8;border-radius:14px;background:#FFF5F3;font-size:17px;color:#C0392B;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.custom-section{padding:0 24px;margin-top:6px;}
+.custom-section label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.custom-section input{width:100%;padding:12px 14px;border:2px solid #DDE2F0;border-radius:14px;font-size:15px;color:#1A3A5C;outline:none;background:#fff;}
+.custom-section input:focus{border-color:#1A5FA8;}
+
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app-screen">
+  <div id="header">
+    <h1>Pour nous les séniors</h1>
+    <p>Appuyez sur un bouton pour ouvrir</p>
+  </div>
+  <div id="grid"></div>
+  <div id="footer">
+    <button id="btn-passwords"><i class="ti ti-key"></i> Mes mots de passe</button>
+    <button id="btn-settings"><i class="ti ti-settings"></i> Paramétrage</button>
+  </div>
+</div>
+
+<!-- Modal mots de passe -->
+<div id="pwd-overlay">
+  <div id="pwd-modal">
+    <div id="pwd-handle"><div></div></div>
+    <div id="pwd-scroll">
+      <div class="pwd-header">
+        <h2>Mes mots de passe</h2>
+        <p>Retrouvez tous vos mots de passe enregistrés sur cet iPad</p>
+      </div>
+
+      <button class="pwd-direct-btn" id="pwd-open-btn">
+        <i class="ti ti-key"></i>
+        Ouvrir mes mots de passe
+      </button>
+      <p class="pwd-note">Appuyez sur le bouton ci-dessus.<br>L'iPad vous demandera votre code ou votre empreinte.</p>
+
+      <div class="divider-line"></div>
+      <div class="guide-title">Si le bouton ne fonctionne pas</div>
+
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Ouvrez les Réglages</div>
+            <div class="step-desc">L'icône grise avec des engrenages sur votre écran d'accueil</div>
+            <span class="step-tag"><i class="ti ti-settings" style="font-size:12px;vertical-align:-1px"></i> Réglages</span>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Appuyez sur "Mots de passe"</div>
+            <div class="step-desc">Dans le menu à gauche, faites défiler vers le bas</div>
+            <span class="step-tag"><i class="ti ti-key" style="font-size:12px;vertical-align:-1px"></i> Mots de passe</span>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Confirmez votre identité</div>
+            <div class="step-desc">Posez votre doigt ou saisissez le code de votre iPad</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Cherchez le site voulu</div>
+            <div class="step-desc">Tapez le nom du site dans la barre de recherche en haut, puis appuyez dessus pour voir l'identifiant et le mot de passe</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pwd-tip">
+        <i class="ti ti-bulb"></i>
+        <p>Sur les sites web, Safari peut remplir automatiquement vos identifiants et mots de passe — vous n'avez pas besoin de les retaper à chaque fois.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal paramétrage -->
+<div id="modal-overlay">
+  <div id="modal">
+    <div id="modal-handle"><div></div></div>
+    <div id="modal-top"><div id="modal-title">Paramétrage des boutons</div></div>
+    <div id="modal-scroll">
+      <div class="modal-section-title">Appuyez sur un bouton pour le modifier</div>
+      <div id="config-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal édition -->
+<div id="edit-overlay">
+  <div id="edit-modal">
+    <div id="edit-handle"><div></div></div>
+    <h3 id="edit-title">Modifier le bouton</h3>
+    <div id="edit-scroll">
+      <div class="field-group">
+        <label>Nom affiché sur le bouton</label>
+        <input type="text" id="edit-name" placeholder="Ex : Météo, Ma famille, Photos…" maxlength="22">
+      </div>
+      <div class="divider"></div>
+      <div class="catalog-title">Choisir une application</div>
+      <div class="catalog-cat-title">Communication</div>
+      <div class="catalog-grid" id="cat-communication"></div>
+      <div class="catalog-cat-title">Réseaux sociaux &amp; Web</div>
+      <div class="catalog-grid" id="cat-social"></div>
+      <div class="catalog-cat-title">Divertissement</div>
+      <div class="catalog-grid" id="cat-divertissement"></div>
+      <div class="catalog-cat-title">Infos &amp; Pratique</div>
+      <div class="catalog-grid" id="cat-infos"></div>
+      <div class="catalog-cat-title">Apple (natif iPad)</div>
+      <div class="catalog-grid" id="cat-apple"></div>
+      <div class="divider" style="margin-top:16px;"></div>
+      <div class="custom-section" style="margin-top:12px;">
+        <label>Ou saisir une adresse personnalisée</label>
+        <input type="url" id="edit-url" placeholder="https://…">
+      </div>
+    </div>
+    <div class="edit-btns">
+      <button class="btn-cancel" id="edit-cancel">Annuler</button>
+      <button class="btn-clear" id="edit-clear" title="Effacer"><i class="ti ti-trash"></i></button>
+      <button class="btn-save" id="edit-save">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATALOG = {
+  communication:[
+    {name:'FaceTime',    url:'facetime://',              icon:'ti-video',           color:'#34C759'},
+    {name:'Téléphone',   url:'tel:',                     icon:'ti-phone-call',      color:'#34C759'},
+    {name:'Messages',    url:'sms:',                     icon:'ti-message-circle',  color:'#34C759'},
+    {name:'WhatsApp',    url:'https://wa.me',            icon:'ti-brand-whatsapp',  color:'#25D366'},
+    {name:'Gmail',       url:'https://mail.google.com',  icon:'ti-mail',            color:'#EA4335'},
+    {name:'Mail Apple',  url:'message://',               icon:'ti-mail',            color:'#1A8CFF'},
+    {name:'Skype',       url:'skype:',                   icon:'ti-brand-skype',     color:'#00AFF0'},
+    {name:'Zoom',        url:'zoomus://',                icon:'ti-video',           color:'#2D8CFF'},
+  ],
+  social:[
+    {name:'Facebook',    url:'fb://',                    icon:'ti-brand-facebook',  color:'#1877F2'},
+    {name:'Messenger',   url:'fb-messenger://',          icon:'ti-message-2',       color:'#0084FF'},
+    {name:'Instagram',   url:'instagram://',             icon:'ti-brand-instagram', color:'#E1306C'},
+    {name:'YouTube',     url:'youtube://',               icon:'ti-brand-youtube',   color:'#FF0000'},
+    {name:'Google',      url:'https://www.google.fr',    icon:'ti-search',          color:'#4285F4'},
+    {name:'Chrome',      url:'googlechrome://',          icon:'ti-world',           color:'#4285F4'},
+    {name:'Twitter/X',   url:'twitter://',               icon:'ti-brand-x',         color:'#000000'},
+    {name:'LinkedIn',    url:'linkedin://',              icon:'ti-brand-linkedin',  color:'#0A66C2'},
+  ],
+  divertissement:[
+    {name:'Netflix',     url:'nflx://',                  icon:'ti-player-play',     color:'#E50914'},
+    {name:'Prime Video', url:'aiv://',                   icon:'ti-player-play',     color:'#00A8E0'},
+    {name:'Disney+',     url:'disneyplus://',            icon:'ti-star',            color:'#113CCF'},
+    {name:'Spotify',     url:'spotify://',               icon:'ti-music',           color:'#1DB954'},
+    {name:'Deezer',      url:'deezer://',                icon:'ti-music',           color:'#EF5466'},
+    {name:'France TV',   url:'https://www.france.tv',    icon:'ti-device-tv',       color:'#E2001A'},
+    {name:'M6+',         url:'https://www.6play.fr',     icon:'ti-device-tv',       color:'#FF6600'},
+    {name:'TF1+',        url:'https://www.tf1plus.fr',   icon:'ti-device-tv',       color:'#0066CC'},
+  ],
+  infos:[
+    {name:'Météo',       url:'https://www.meteofrance.com',   icon:'ti-cloud-rain',    color:'#4AAAF0'},
+    {name:'Actu',        url:'https://www.francetvinfo.fr',   icon:'ti-news',          color:'#C00'},
+    {name:'Le Figaro',   url:'https://www.lefigaro.fr',       icon:'ti-news',          color:'#003366'},
+    {name:'Le Monde',    url:'https://www.lemonde.fr',        icon:'ti-news',          color:'#000'},
+    {name:'Google Maps', url:'maps://',                       icon:'ti-map-pin',       color:'#34A853'},
+    {name:'Plans Apple', url:'maps://',                       icon:'ti-map',           color:'#1A8CFF'},
+    {name:'Ameli',       url:'https://www.ameli.fr',          icon:'ti-heart',         color:'#009BDE'},
+    {name:'Doctolib',    url:'https://www.doctolib.fr',       icon:'ti-stethoscope',   color:'#3367D6'},
+  ],
+  apple:[
+    {name:'Photos',         url:'photos-redirect://',  icon:'ti-photo',      color:'#FF9500'},
+    {name:'Appareil photo', url:'photos-redirect://',  icon:'ti-camera',     color:'#555'},
+    {name:'Agenda',         url:'calshow://',           icon:'ti-calendar',   color:'#FF3B30'},
+    {name:'Contacts',       url:'contacts://',          icon:'ti-user',       color:'#1A8CFF'},
+    {name:'Horloge',        url:'clock-worldclock://',  icon:'ti-clock',      color:'#333'},
+    {name:'Réglages',       url:'App-Prefs://',         icon:'ti-settings',   color:'#888'},
+    {name:'App Store',      url:'itms-apps://',         icon:'ti-apps',       color:'#1A8CFF'},
+    {name:'Safari',         url:'safari://',            icon:'ti-world',      color:'#1A8CFF'},
+  ],
+};
+
+const DEFAULT_SLOTS=[
+  {name:'FaceTime',  url:'facetime://',               icon:'ti-video',           iconColor:'#34C759'},
+  {name:'WhatsApp',  url:'https://wa.me',             icon:'ti-brand-whatsapp',  iconColor:'#25D366'},
+  {name:'Météo',     url:'https://www.meteofrance.com',icon:'ti-cloud-rain',     iconColor:'#4AAAF0'},
+  {name:'Photos',    url:'photos-redirect://',        icon:'ti-photo',           iconColor:'#FF9500'},
+  {name:'YouTube',   url:'youtube://',                icon:'ti-brand-youtube',   iconColor:'#FF0000'},
+  {name:'Facebook',  url:'fb://',                     icon:'ti-brand-facebook',  iconColor:'#1877F2'},
+  {name:'',url:'',icon:'',iconColor:''},
+  {name:'',url:'',icon:'',iconColor:''},
+];
+
+let slots=JSON.parse(localStorage.getItem('seniors_slots_v2')||'null')||DEFAULT_SLOTS.map(s=>({...s}));
+let editingIndex=-1;
+let selectedApp=null;
+
+function save(){try{localStorage.setItem('seniors_slots_v2',JSON.stringify(slots));}catch(e){}}
+
+function renderGrid(){
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  slots.forEach((slot,i)=>{
+    const btn=document.createElement('button');
+    btn.className='app-btn'+(slot.name?' configured':' empty');
+    btn.setAttribute('aria-label',slot.name||'Bouton vide');
+    if(slot.name){
+      const dot=document.createElement('div');dot.className='btn-color-dot';btn.appendChild(dot);
+      const ic=document.createElement('i');ic.className='ti '+(slot.icon||'ti-apps')+' btn-icon';
+      if(slot.iconColor)ic.style.color=slot.iconColor;
+      ic.setAttribute('aria-hidden','true');btn.appendChild(ic);
+      const lbl=document.createElement('span');lbl.className='btn-label';lbl.textContent=slot.name;btn.appendChild(lbl);
+    } else {
+      const ic=document.createElement('i');ic.className='ti ti-plus btn-icon';ic.setAttribute('aria-hidden','true');btn.appendChild(ic);
+      const lbl=document.createElement('span');lbl.className='btn-label';lbl.textContent='Ajouter';btn.appendChild(lbl);
+    }
+    btn.addEventListener('click',()=>{
+      if(slot.name&&slot.url){window.open(slot.url,'_blank');}
+      else{openEditModal(i);}
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function renderConfigList(){
+  const list=document.getElementById('config-list');list.innerHTML='';
+  slots.forEach((slot,i)=>{
+    const div=document.createElement('div');div.className='config-slot';
+    const num=document.createElement('div');num.className='config-slot-num';num.textContent=i+1;div.appendChild(num);
+    const ic=document.createElement('i');
+    ic.className='ti '+(slot.icon||'ti-plus')+' config-slot-icon';
+    if(slot.iconColor)ic.style.color=slot.iconColor;
+    ic.setAttribute('aria-hidden','true');div.appendChild(ic);
+    const info=document.createElement('div');info.className='config-slot-info';
+    const nm=document.createElement('div');nm.className='config-slot-name';nm.textContent=slot.name||'Bouton vide';info.appendChild(nm);
+    const ur=document.createElement('div');ur.className='config-slot-url';ur.textContent=slot.url||'Appuyez pour configurer';info.appendChild(ur);
+    div.appendChild(info);
+    const ch=document.createElement('i');ch.className='ti ti-chevron-right config-slot-edit';ch.setAttribute('aria-hidden','true');div.appendChild(ch);
+    div.addEventListener('click',()=>openEditModal(i));
+    list.appendChild(div);
+  });
+}
+
+function buildCatalog(){
+  Object.entries(CATALOG).forEach(([cat,apps])=>{
+    const container=document.getElementById('cat-'+cat);if(!container)return;
+    apps.forEach(app=>{
+      const el=document.createElement('div');el.className='cat-item';
+      const ic=document.createElement('i');ic.className='ti '+app.icon+' cat-item-icon';
+      ic.style.color=app.color||'#1A5FA8';ic.setAttribute('aria-hidden','true');el.appendChild(ic);
+      const nm=document.createElement('div');nm.className='cat-item-name';nm.textContent=app.name;el.appendChild(nm);
+      el.addEventListener('click',()=>selectApp(app,el));
+      container.appendChild(el);
+    });
+  });
+}
+
+function selectApp(app,el){
+  selectedApp=app;
+  document.querySelectorAll('.cat-item').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  if(!document.getElementById('edit-name').value)document.getElementById('edit-name').value=app.name;
+  document.getElementById('edit-url').value=app.url;
+}
+
+function openEditModal(index){
+  editingIndex=index;
+  const slot=slots[index];
+  document.getElementById('edit-title').textContent='Bouton '+(index+1);
+  document.getElementById('edit-name').value=slot.name||'';
+  document.getElementById('edit-url').value=slot.url||'';
+  selectedApp=null;
+  document.querySelectorAll('.cat-item').forEach(el=>{
+    const nm=el.querySelector('.cat-item-name');
+    if(nm&&nm.textContent===slot.name)el.classList.add('selected');
+    else el.classList.remove('selected');
+  });
+  document.getElementById('edit-overlay').classList.add('open');
+  document.getElementById('edit-scroll').scrollTop=0;
+}
+
+function closeEditModal(){document.getElementById('edit-overlay').classList.remove('open');}
+
+document.getElementById('btn-passwords').addEventListener('click',()=>{
+  document.getElementById('pwd-overlay').classList.add('open');
+});
+document.getElementById('pwd-overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('pwd-overlay'))document.getElementById('pwd-overlay').classList.remove('open');
+});
+
+document.getElementById('pwd-open-btn').addEventListener('click',()=>{
+  window.location.href='App-Prefs://passwords';
+  setTimeout(()=>{
+    window.location.href='prefs:root=PASSWORDS';
+  },400);
+});
+
+document.getElementById('btn-settings').addEventListener('click',()=>{renderConfigList();document.getElementById('modal-overlay').classList.add('open');});
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');});
+document.getElementById('edit-cancel').addEventListener('click',closeEditModal);
+document.getElementById('edit-overlay').addEventListener('click',e=>{if(e.target===document.getElementById('edit-overlay'))closeEditModal();});
+
+document.getElementById('edit-clear').addEventListener('click',()=>{
+  slots[editingIndex]={name:'',url:'',icon:'',iconColor:''};
+  save();renderGrid();renderConfigList();closeEditModal();
+});
+
+document.getElementById('edit-save').addEventListener('click',()=>{
+  const name=document.getElementById('edit-name').value.trim();
+  const url=document.getElementById('edit-url').value.trim();
+  if(!name){document.getElementById('edit-name').focus();return;}
+  const icon=selectedApp?selectedApp.icon:(slots[editingIndex].icon||'ti-apps');
+  const iconColor=selectedApp?selectedApp.color:(slots[editingIndex].iconColor||'#1A5FA8');
+  slots[editingIndex]={name,url:url||'#',icon,iconColor};
+  save();renderGrid();renderConfigList();closeEditModal();
+});
+
+buildCatalog();
+renderGrid();
+</script>
+</body>
+</html>
