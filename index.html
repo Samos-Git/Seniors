@@ -29,6 +29,44 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
 #btn-settings{background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.26);border-radius:50px;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;outline:none;}
 #btn-settings:active{transform:scale(.95);}
 #btn-settings i{font-size:16px;}
+#btn-notes{background:rgba(100,220,160,.18);border:2px solid rgba(100,220,160,.38);border-radius:50px;color:#80F0B8;font-size:13px;font-weight:700;padding:8px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;outline:none;}
+#btn-notes:active{transform:scale(.95);}
+#btn-notes i{font-size:17px;}
+
+/* MODAL PENSE-BÊTE */
+#notes-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;align-items:flex-end;justify-content:center;}
+#notes-overlay.open{display:flex;}
+#notes-modal{background:#FFFEF5;border-radius:28px 28px 0 0;width:100%;max-height:92vh;display:flex;flex-direction:column;animation:slideUp .28s cubic-bezier(.34,1.56,.64,1);}
+#notes-handle{display:flex;justify-content:center;padding:13px 0 4px;flex-shrink:0;}
+#notes-handle div{width:40px;height:5px;background:#D8D0A0;border-radius:10px;}
+#notes-header{flex-shrink:0;padding:4px 20px 12px;display:flex;align-items:center;justify-content:space-between;}
+#notes-header h2{font-size:22px;font-weight:700;color:#3A3000;}
+#btn-add-note{background:#F5C800;border:none;border-radius:14px;color:#3A3000;font-size:14px;font-weight:700;padding:10px 16px;cursor:pointer;display:flex;align-items:center;gap:7px;-webkit-tap-highlight-color:transparent;flex-shrink:0;}
+#btn-add-note:active{background:#DDB000;}
+#btn-add-note i{font-size:18px;}
+#notes-scroll{overflow-y:auto;flex:1;padding:0 16px 24px;}
+#notes-empty{text-align:center;padding:50px 30px;color:#B8A840;}
+#notes-empty i{font-size:52px;display:block;margin-bottom:14px;opacity:.5;}
+#notes-empty p{font-size:17px;line-height:1.5;}
+.note-card{background:#FFF9C4;border:2px solid #F0DC60;border-radius:18px;padding:16px 16px 12px;margin-bottom:12px;position:relative;box-shadow:0 3px 10px rgba(0,0,0,.07);}
+.note-card-text{font-size:18px;color:#2A2000;line-height:1.55;white-space:pre-wrap;word-break:break-word;min-height:28px;}
+.note-card-date{font-size:11px;color:#B8A040;margin-top:8px;}
+.note-card-actions{display:flex;gap:8px;margin-top:10px;justify-content:flex-end;}
+.note-btn-edit{background:#FFF0A0;border:1.5px solid #E0C800;border-radius:9px;color:#7A6000;font-size:13px;font-weight:600;padding:5px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.note-btn-del{background:#FFF0F0;border:1.5px solid #FFBBBB;border-radius:9px;color:#C03030;font-size:13px;font-weight:600;padding:5px 12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+
+/* MODAL SAISIE NOTE */
+#note-edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center;padding:24px;}
+#note-edit-overlay.open{display:flex;}
+#note-edit-box{background:#FFFEF5;border-radius:22px;width:100%;max-width:500px;padding:24px 20px 18px;animation:popIn .2s cubic-bezier(.34,1.56,.64,1);}
+#note-edit-box h3{font-size:19px;font-weight:700;color:#3A3000;margin-bottom:14px;text-align:center;}
+#note-textarea{width:100%;min-height:140px;padding:14px;border:2px solid #E8D840;border-radius:14px;font-size:18px;color:#2A2000;background:#FFFFF0;outline:none;resize:none;font-family:inherit;line-height:1.5;}
+#note-textarea:focus{border-color:#C8A800;}
+.note-edit-btns{display:flex;gap:10px;margin-top:14px;}
+.note-btn-cancel{flex:1;padding:13px;border:2px solid #E0E0E0;border-radius:13px;background:#fff;font-size:15px;font-weight:600;color:#888;cursor:pointer;}
+.note-btn-save{flex:2;padding:13px;border:none;border-radius:13px;background:#F5C800;font-size:15px;font-weight:700;color:#3A3000;cursor:pointer;}
+.note-btn-save:active{background:#DDB000;}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
 
 /* MODAL MOTS DE PASSE */
 #pwd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;align-items:flex-end;justify-content:center;}
@@ -134,6 +172,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
   <div id="grid"></div>
   <div id="footer">
     <button id="btn-passwords"><i class="ti ti-key"></i> Mes mots de passe</button>
+    <button id="btn-notes"><i class="ti ti-notes"></i> Pense-bête</button>
     <button id="btn-settings"><i class="ti ti-settings"></i> Paramétrage</button>
   </div>
 </div>
@@ -168,6 +207,36 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0D3F7A;min-height:100vh
         <div class="guide-step"><div class="step-num">4</div><div><div class="step-title">Cherchez le site voulu</div><div class="step-desc">Tapez le nom dans la barre de recherche, appuyez dessus pour voir l'identifiant et le mot de passe</div></div></div>
       </div>
       <div class="pwd-tip"><i class="ti ti-bulb"></i><p>Sur les sites web, Safari peut remplir automatiquement vos identifiants — vous n'avez pas besoin de les retaper à chaque fois.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pense-bête -->
+<div id="notes-overlay">
+  <div id="notes-modal">
+    <div id="notes-handle"><div></div></div>
+    <div id="notes-header">
+      <h2>📝 Pense-bête</h2>
+      <button id="btn-add-note"><i class="ti ti-plus"></i> Ajouter</button>
+    </div>
+    <div id="notes-scroll">
+      <div id="notes-list"></div>
+      <div id="notes-empty">
+        <i class="ti ti-notes"></i>
+        <p>Pas encore de pense-bête.<br>Appuyez sur <strong>Ajouter</strong> pour en créer un !</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Saisie / édition d'une note -->
+<div id="note-edit-overlay">
+  <div id="note-edit-box">
+    <h3 id="note-edit-title">Nouveau pense-bête</h3>
+    <textarea id="note-textarea" placeholder="Écrivez votre note ici…" maxlength="500"></textarea>
+    <div class="note-edit-btns">
+      <button class="note-btn-cancel" id="note-cancel">Annuler</button>
+      <button class="note-btn-save" id="note-save">Enregistrer</button>
     </div>
   </div>
 </div>
@@ -484,6 +553,70 @@ document.getElementById('edit-save').onclick=()=>{
   };
   save();renderGrid();renderConfigList();closeEdit();
 };
+
+/* ===== PENSE-BÊTE ===== */
+let notes=JSON.parse(localStorage.getItem('seniors_notes')||'[]');
+let editingNoteIdx=-1;
+
+function saveNotes(){try{localStorage.setItem('seniors_notes',JSON.stringify(notes));}catch(e){}}
+
+function fmtDate(ts){
+  const d=new Date(ts);
+  return d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+function renderNotes(){
+  const list=document.getElementById('notes-list');
+  const empty=document.getElementById('notes-empty');
+  list.innerHTML='';
+  if(notes.length===0){empty.style.display='block';return;}
+  empty.style.display='none';
+  [...notes].reverse().forEach((note,ri)=>{
+    const i=notes.length-1-ri;
+    const card=document.createElement('div');card.className='note-card';
+    const txt=document.createElement('div');txt.className='note-card-text';txt.textContent=note.text;card.appendChild(txt);
+    const date=document.createElement('div');date.className='note-card-date';date.textContent=fmtDate(note.ts);card.appendChild(date);
+    const actions=document.createElement('div');actions.className='note-card-actions';
+    const editB=document.createElement('button');editB.className='note-btn-edit';editB.textContent='✏️ Modifier';
+    editB.addEventListener('click',()=>openNoteEdit(i));
+    const delB=document.createElement('button');delB.className='note-btn-del';delB.textContent='🗑 Supprimer';
+    delB.addEventListener('click',()=>{if(confirm('Supprimer ce pense-bête ?')){notes.splice(i,1);saveNotes();renderNotes();}});
+    actions.appendChild(editB);actions.appendChild(delB);card.appendChild(actions);
+    list.appendChild(card);
+  });
+}
+
+function openNoteEdit(idx){
+  editingNoteIdx=idx;
+  document.getElementById('note-edit-title').textContent=idx===-1?'Nouveau pense-bête':'Modifier le pense-bête';
+  document.getElementById('note-textarea').value=idx===-1?'':(notes[idx]?notes[idx].text:'');
+  document.getElementById('note-edit-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('note-textarea').focus(),200);
+}
+
+document.getElementById('btn-notes').addEventListener('click',()=>{
+  renderNotes();
+  document.getElementById('notes-overlay').classList.add('open');
+});
+document.getElementById('notes-overlay').addEventListener('click',e=>{
+  if(e.target.id==='notes-overlay')document.getElementById('notes-overlay').classList.remove('open');
+});
+document.getElementById('btn-add-note').addEventListener('click',()=>openNoteEdit(-1));
+document.getElementById('note-cancel').addEventListener('click',()=>document.getElementById('note-edit-overlay').classList.remove('open'));
+document.getElementById('note-edit-overlay').addEventListener('click',e=>{
+  if(e.target.id==='note-edit-overlay')document.getElementById('note-edit-overlay').classList.remove('open');
+});
+document.getElementById('note-save').addEventListener('click',()=>{
+  const text=document.getElementById('note-textarea').value.trim();
+  if(!text)return;
+  if(editingNoteIdx===-1){
+    notes.push({text,ts:Date.now()});
+  } else {
+    notes[editingNoteIdx]={text,ts:Date.now()};
+  }
+  saveNotes();renderNotes();
+  document.getElementById('note-edit-overlay').classList.remove('open');
+});
 
 buildCatalog();
 renderGrid();
